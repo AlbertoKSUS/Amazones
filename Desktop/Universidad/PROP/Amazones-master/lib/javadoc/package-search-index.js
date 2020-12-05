@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"edu.upc.epsevg.prop.amazons"},{"l":"edu.upc.epsevg.prop.amazons.players"}]
