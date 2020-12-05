@@ -5,10 +5,12 @@
  */
 package edu.upc.epsevg.prop.amazons.players;
 
+import edu.upc.epsevg.prop.amazons.CellType;
 import edu.upc.epsevg.prop.amazons.GameStatus;
 import edu.upc.epsevg.prop.amazons.IAuto;
 import edu.upc.epsevg.prop.amazons.IPlayer;
 import edu.upc.epsevg.prop.amazons.Move;
+import java.awt.Point;
 
 /**
  *
@@ -21,13 +23,14 @@ public class NouGroup_iter implements IPlayer, IAuto {
 
     public NouGroup_iter(String name) {
         this.name = name;
+        
     }
 
     @Override
     public void timeout() {
         // Nothing to do! I'm so fast, I never timeout 8-)
     }
-    
+    Point aux = new Point(2,4);
     public Move move(GameStatus s) {
         return null;
     }
@@ -35,9 +38,9 @@ public class NouGroup_iter implements IPlayer, IAuto {
     @Override
     public String getName() {
         return "Player(" + name + ")";
-    }
+    }/*  
     private int max(GameStatus s, int depth, int player, int alpha, int beta){
-      // Max
+    // Max
       if (!estat.espotmoure() || depth == 0) return heuristica(estat, player);
       for (int i=0;i<estat.getMida();i++){    
           if (estat.movpossible(i)){
@@ -53,24 +56,24 @@ public class NouGroup_iter implements IPlayer, IAuto {
           }
       }
       return alpha;
-  }
+    }
     
-  private int min(GameStatus estat, int depth, int player, int alpha, int beta){
-      // Min
-      if (depth == 0 || !estat.espotmoure()) return heuristica(estat, player);
-      for (int i=0;i<estat.getMida();i++){
-          if (estat.movpossible(i)){
-              Tauler estat2 = new Tauler(estat);
-              estat2.afegeix(i, player); 
-              cont++;
-              if (estat2.solucio(i, player)) return Integer.MIN_VALUE;
-              int valor = max(estat2, depth-1, -player, alpha, beta);    
-              beta = Math.min(beta, valor);
-              if (beta <= alpha){
-                  return beta;
-              }
-          }
-      }
-      return beta;
-  }
+    private int min(GameStatus estat, int depth, int player, int alpha, int beta){
+        // Min
+        if (depth == 0 || !estat.espotmoure()) return heuristica(estat, player);
+        for (int i=0;i<estat.getMida();i++){
+            if (estat.movpossible(i)){
+                Tauler estat2 = new Tauler(estat);
+                estat2.afegeix(i, player); 
+                cont++;
+                if (estat2.solucio(i, player)) return Integer.MIN_VALUE;
+                int valor = max(estat2, depth-1, -player, alpha, beta);    
+                beta = Math.min(beta, valor);
+                if (beta <= alpha){
+                    return beta;
+                }
+            }
+        }
+        return beta;
+    }*/
 }
