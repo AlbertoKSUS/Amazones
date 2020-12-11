@@ -34,6 +34,11 @@ public class NouGroup implements IPlayer, IAuto {
         // Nothing to do! I'm so fast, I never timeout 8-)
     }
     
+    private void mostra(ArrayList<Point> n){
+        for(int i = 0; i<n.size();++i){
+            System.out.println("=>"+ i+ " pos " + n.get(i));
+        }
+    }
     public Move move(GameStatus s) {
         
         //Obtenemos el color que representa al jugador
@@ -50,12 +55,15 @@ public class NouGroup implements IPlayer, IAuto {
         
         //Obtenemos las casillas vacias del tablero.
         ArrayList<Point> emptyCells = getEmptyCells(s);
+        //System.out.println("=> "+ emptyCells.size());
         
         int qn = s.getNumberOfAmazonsForEachColor();
         
         //Por cada Amazona del jugador...
         //ArrayList<Point> pendingAmazons = new ArrayList<>();
+        System.out.println("qn" + qn);
         for (int q = 0; q < qn; q++) {
+            
             //Obtenemos una amazona
             Point amazona = s.getAmazon(propi, q);
             
@@ -73,18 +81,18 @@ public class NouGroup implements IPlayer, IAuto {
                 ArrayList<Point> emptyCells1 = new ArrayList<>(emptyCells);
                 //Modificamos la lista emptyCells1
                 for(int k = 0; k < emptyCells1.size() && !trobat; k++){
-                    if (emptyCells1.get(k) == possiblesMovimientos.get(i)){
-                       emptyCells1.add(k,amazona);
+                    if (emptyCells1.get(k).x == possiblesMovimientos.get(i).x && emptyCells1.get(k).y == possiblesMovimientos.get(i).y ) {
+                       emptyCells1.set(k,amazona);
                        trobat = true; 
                     }
                 }
             
                 //Por cada possible casilla en la que tirar la flecha...
-                for(int r = 0; r < emptyCells.size(); r++ ){
+                for(int r = 0; r < emptyCells1.size(); r++ ){
                     GameStatus s3 = new GameStatus(s2);
                     
                    // System.out.println("peta aki");
-                    s3.placeArrow(emptyCells.get(r));
+                    s3.placeArrow(emptyCells1.get(r));
                    // System.out.println("esto no deberai salir");
                 
                     //LLamamos a minimax
@@ -93,7 +101,7 @@ public class NouGroup implements IPlayer, IAuto {
                     emptyCells2.remove(r);
                     //sumamos uno porque en este punto hemos llegado a un nodo explorado;
                     count++;
-                    int valor = min(s3,7 ,Integer.MIN_VALUE,Integer.MAX_VALUE,emptyCells2);
+                    int valor = min(s3,4 ,Integer.MIN_VALUE,Integer.MAX_VALUE,emptyCells2);
                     
                     //genera el movimiento actual, con el numero de  nodos buscados, su profundidad(por ejemlpo 8  y el metodo de busqueda, en este caso MINIMAX)
                     Move actual = new Move(amazona,possiblesMovimientos.get(i),emptyCells.get(r),count,8,SearchType.MINIMAX);
@@ -110,8 +118,9 @@ public class NouGroup implements IPlayer, IAuto {
 
             }
             
-            
+              
         }
+        System.out.println("<<<=" +count);
         return fi;
     }
     
@@ -134,11 +143,12 @@ public class NouGroup implements IPlayer, IAuto {
     }
     private int min(GameStatus estat, int depth, int alpha, int beta, ArrayList<java.awt.Point> emptyCells){
         // si hemos llegado al nodo final  o ya no hay movimientos por hacer
-        if (depth == 0 || estat.isGameOver()) return heuristica(estat, enemic);
+        if (depth == 0 || estat.isGameOver()) return 0;//n heuristica(estat, enemic);
         int qn = estat.getNumberOfAmazonsForEachColor();
         
         //Por cada Amazona del jugador...
         //ArrayList<Point> pendingAmazons = new ArrayList<>();
+        //System.out.println("=> "+ emptyCells.size());
         for (int q = 0; q < qn; q++) {
             //Obtenemos una amazona
             Point amazona = estat.getAmazon(enemic, q);
@@ -157,20 +167,17 @@ public class NouGroup implements IPlayer, IAuto {
                 ArrayList<Point> emptyCells1 = new ArrayList<>(emptyCells);
                 //Modificamos la lista emptyCells1
                 for(int k = 0; k < emptyCells1.size() && !trobat; k++){
-                    if (emptyCells1.get(k) == possiblesMovimientos.get(i)){
-                       emptyCells1.add(k,amazona);
+                    if (emptyCells1.get(k).x == possiblesMovimientos.get(i).x && emptyCells1.get(k).y == possiblesMovimientos.get(i).y ) {
+                       emptyCells1.set(k,amazona);
                        trobat = true; 
                     }
                 }
             
                 //Por cada possible casilla en la que tirar la flecha...
-                for(int r = 0; r < emptyCells.size(); r++ ){
+                for(int r = 0; r < emptyCells1.size(); r++ ){
                     GameStatus s3 = new GameStatus(s2);
                     
-                    System.out.println("peta aki");
-                    s3.placeArrow(emptyCells.get(r));
-                    System.out.println("esto no deberai salir");
-                
+                    s3.placeArrow(emptyCells1.get(r));
                     //LLamamos a minimax
                     
                     ArrayList<Point> emptyCells2 = new ArrayList<>(emptyCells1);
@@ -190,8 +197,9 @@ public class NouGroup implements IPlayer, IAuto {
     }
     private int max(GameStatus estat, int depth, int alpha, int beta, ArrayList<java.awt.Point> emptyCells){
         // si hemos llegado al nodo final  o ya no hay movimientos por hacer
-        if (depth == 0 || estat.isGameOver()) return heuristica(estat, propi);
+        if (depth == 0 || estat.isGameOver()) return 0;//heuristica(estat, propi);
         int qn = estat.getNumberOfAmazonsForEachColor();
+        //System.out.println("=> "+ emptyCells.size());
         
         //Por cada Amazona del jugador...
         //ArrayList<Point> pendingAmazons = new ArrayList<>();
@@ -213,20 +221,16 @@ public class NouGroup implements IPlayer, IAuto {
                 ArrayList<Point> emptyCells1 = new ArrayList<>(emptyCells);
                 //Modificamos la lista emptyCells1
                 for(int k = 0; k < emptyCells1.size() && !trobat; k++){
-                    if (emptyCells1.get(k) == possiblesMovimientos.get(i)){
-                       emptyCells1.add(k,amazona);
+                    if (emptyCells1.get(k).x == possiblesMovimientos.get(i).x && emptyCells1.get(k).y == possiblesMovimientos.get(i).y ) {
+                       emptyCells1.set(k,amazona);
                        trobat = true; 
                     }
                 }
             
                 //Por cada possible casilla en la que tirar la flecha...
-                for(int r = 0; r < emptyCells.size(); r++ ){
+                for(int r = 0; r < emptyCells1.size(); r++ ){
                     GameStatus s3 = new GameStatus(s2);
-                    
-                    System.out.println("peta aki");
-                    s3.placeArrow(emptyCells.get(r));
-                    System.out.println("esto no deberai salir");
-                
+                    s3.placeArrow(emptyCells1.get(r));
                     //LLamamos a minimax
                     
                     ArrayList<Point> emptyCells2 = new ArrayList<>(emptyCells1);
