@@ -143,7 +143,10 @@ public class NouGroup implements IPlayer, IAuto {
     }
     private int min(GameStatus estat, int depth, int alpha, int beta, ArrayList<java.awt.Point> emptyCells){
         // si hemos llegado al nodo final  o ya no hay movimientos por hacer
-        if (depth == 0 || estat.isGameOver()) return 0;//n heuristica(estat, enemic);
+        if (depth == 0 || estat.isGameOver()){
+            if(estat.GetWinner() == enemic) return Integer.MIN_VALUE;
+            else return 0; //aqui va la heuristica
+        }//n heuristica(estat, enemic);
         int qn = estat.getNumberOfAmazonsForEachColor();
         
         //Por cada Amazona del jugador...
@@ -197,7 +200,10 @@ public class NouGroup implements IPlayer, IAuto {
     }
     private int max(GameStatus estat, int depth, int alpha, int beta, ArrayList<java.awt.Point> emptyCells){
         // si hemos llegado al nodo final  o ya no hay movimientos por hacer
-        if (depth == 0 || estat.isGameOver()) return 0;//heuristica(estat, propi);
+        if (depth == 0 || estat.isGameOver()){
+            if(estat.GetWinner() == propi) return Integer.MAX_VALUE;
+            else return 0; //aqui va la heuristica
+        }//heuristica(estat, propi);
         int qn = estat.getNumberOfAmazonsForEachColor();
         //System.out.println("=> "+ emptyCells.size());
         
