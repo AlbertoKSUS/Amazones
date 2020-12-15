@@ -21,7 +21,7 @@ public class Amazons {
             @Override
             public void run() {
                 
-                IPlayer player1 = new HumanPlayer("Snail");
+                IPlayer player1 = new RandomPlayer("pacp");
                 IPlayer player2 = new NouGroup("hol");
                 
                 new AmazonsBoard(player1 , player2, 10, Level.QUARTERBOARD);

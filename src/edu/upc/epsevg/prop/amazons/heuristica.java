@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.upc.epsevg.prop.amazons.players;
+package edu.upc.epsevg.prop.amazons;
 
 //Imports
 import edu.upc.epsevg.prop.amazons.CellType;
@@ -62,12 +62,12 @@ public class heuristica {
             Point amazonaEnemiga = s.getAmazon(enemic, i);
             
             //Obtenemos todos los movimientos possibles de la amazona amiga.
-            ArrayList<Point> possiblesMovimientosAmigos = s.getAmazonMoves(amazonaAmiga, true);
+            /*ArrayList<Point> possiblesMovimientosAmigos = s.getAmazonMoves(amazonaAmiga, true);
             //Obtenemos todos los movimientos possibles de la amazona enemiga
-            ArrayList<Point> possiblesMovimientosEnemigos = s.getAmazonMoves(amazonaAmiga, true);
+            ArrayList<Point> possiblesMovimientosEnemigos = s.getAmazonMoves(amazonaEnemiga, true);*/
             
-            valor += possiblesMovimientosAmigos.size();
-            valor -= possiblesMovimientosEnemigos.size();
+            valor += s.getAmazonMoves(amazonaAmiga, false).size();
+            valor -= s.getAmazonMoves(amazonaEnemiga,false ).size();
             
         }
 
