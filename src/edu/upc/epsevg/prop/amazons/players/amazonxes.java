@@ -23,8 +23,8 @@ public class amazonxes implements IPlayer, IAuto {
 
     //Atributos
     private String name;
-    CellType propi;
-    CellType enemic;
+    /*CellType propi;
+    CellType enemic;*/
     int countNodes;
     int countFulles;
     int profunditatMaxima;
@@ -69,10 +69,10 @@ public class amazonxes implements IPlayer, IAuto {
         // Inicializaciones
         
         //Obtenemos el color que representa al jugador
-        propi = s.getCurrentPlayer();
+        CellType actual = s.getCurrentPlayer();
         //Obtenemos el color que representa el enemigo
-        if(propi == CellType.PLAYER1) enemic = CellType.PLAYER2;
-        else enemic = CellType.PLAYER1;
+        /*if(propi == CellType.PLAYER1) enemic = CellType.PLAYER2;
+        else enemic = CellType.PLAYER1;*/
         
         //Variables para optimizar la poda.
         double max = Double.NEGATIVE_INFINITY;
@@ -94,7 +94,7 @@ public class amazonxes implements IPlayer, IAuto {
         for (int q = 0; q < s.getNumberOfAmazonsForEachColor(); q++) {
             
             //Obtenemos una amazona
-            Point amazona = s.getAmazon(propi, q);
+            Point amazona = s.getAmazon(actual, q);
             
             //Obtenemos todos los movimientos possibles de es amazona...
             ArrayList<Point> possiblesMovimientos = s.getAmazonMoves(amazona, false); // -> True para simplificar y tardar menos.
@@ -103,17 +103,18 @@ public class amazonxes implements IPlayer, IAuto {
             for(int i = 0; i < possiblesMovimientos.size(); i++){
             
                 //Realizamos el movimiento de la amazona en el tablero...
-                //GameStatus s2 = new GameStatus(s);
-                s.moveAmazon(amazona, possiblesMovimientos.get(i));
+                GameStatus s2 = new GameStatus(s);
+                s2.moveAmazon(amazona, possiblesMovimientos.get(i));
                 
                 //Obtenemos una lista con todas las casillas libres del tablero...
-                ArrayList<Point> casillasLibres = getEmptyCells(s);
+                ArrayList<Point> casillasLibres = getEmptyCells(s2);
                 
                 //Por cada possible casilla libre en la que tirar la flecha...
                 for(int r = 0; r < casillasLibres.size(); r++ ){
                     
                     //Realizamos el movimiento de tirar la flecha en el tablero...
                     GameStatus s3 = new GameStatus(s);
+                    s3.moveAmazon(amazona, possiblesMovimientos.get(i));
                     s3.placeArrow(casillasLibres.get(r));                   
                 
                     //Llamamos a MINIMAX                        
@@ -128,7 +129,6 @@ public class amazonxes implements IPlayer, IAuto {
                         mejorFlecha = casillasLibres.get(r);
                     }                 
                 }
-                s.moveAmazon(possiblesMovimientos.get(i),amazona);
             }         
         }
         //Devolvemos el mejor movimiento
@@ -172,16 +172,16 @@ public class amazonxes implements IPlayer, IAuto {
         
         //Contador de nodos explorados
         countNodes++;
-        
+        CellType actual = s.getCurrentPlayer();
         // Si la partida ha acabado, devolvemos infinito o -infinito dependiendo quien ha ganado
         if ( s.isGameOver()) {
-            if (s.GetWinner() == propi) return Double.POSITIVE_INFINITY;
-            else return Double.NEGATIVE_INFINITY;
+            if (s.GetWinner() == actual) return Double.NEGATIVE_INFINITY;
+            else return Double.POSITIVE_INFINITY;
         }
         else if ( profunditat == 0) {
             countFulles++;
             heuristica actu = new heuristica(s,1);
-            return actu.getHeuristica();
+            return -actu.getHeuristica();
         }
         
         // Seguimos explorando
@@ -193,7 +193,7 @@ public class amazonxes implements IPlayer, IAuto {
         for (int q = 0; q < s.getNumberOfAmazonsForEachColor(); q++) {
             
             //Obtenemos una amazona
-            Point amazona = s.getAmazon(enemic, q);
+            Point amazona = s.getAmazon(actual, q);
 
             //Obtenemos todos los movimientos possibles de es amazona...
             ArrayList<Point> possiblesMovimientos = s.getAmazonMoves(amazona, false); // -> True para simplificar y tardar menos.
@@ -202,17 +202,18 @@ public class amazonxes implements IPlayer, IAuto {
             for(int i = 0; i < possiblesMovimientos.size(); i++){
             
                 //Realizamos el movimiento de la amazona en el tablero...
-               // GameStatus s2 = new GameStatus(s);
-                s.moveAmazon(amazona, possiblesMovimientos.get(i));
+                GameStatus s2 = new GameStatus(s);
+                s2.moveAmazon(amazona, possiblesMovimientos.get(i));
                 
                 //Obtenemos una lista con todas las casillas libres del tablero...
-                ArrayList<Point> casillasLibres = getEmptyCells(s);
+                ArrayList<Point> casillasLibres = getEmptyCells(s2);
                 
                 //Por cada possible casilla libre en la que tirar la flecha...
                 for(int r = 0; r < casillasLibres.size(); r++ ){
                     
                     //Realizamos el movimiento de tirar la flecha en el tablero...
                     GameStatus s3 = new GameStatus(s);
+                    s3.moveAmazon(amazona,possiblesMovimientos.get(i));
                     s3.placeArrow(casillasLibres.get(r));                   
                 
                     //Llamamos a MAX
@@ -222,7 +223,6 @@ public class amazonxes implements IPlayer, IAuto {
                     alfa = Math.min(valorNodeActual,alfa);
                     if( beta <= alfa) return valorNodeActual;
                 }
-                s.moveAmazon(possiblesMovimientos.get(i),amazona);
             }
         }
         return valorNodeActual;
@@ -232,10 +232,10 @@ public class amazonxes implements IPlayer, IAuto {
         
         //Contador de nodos explorados
         countNodes++;
-        
+        CellType actual = s.getCurrentPlayer();
         // Si la partida ha acabado, devolvemos infinito o -infinito dependiendo quien ha ganado
         if ( s.isGameOver()) {
-            if (s.GetWinner() == propi) return Double.POSITIVE_INFINITY;
+            if (s.GetWinner() == actual) return Double.POSITIVE_INFINITY;
             else return Double.NEGATIVE_INFINITY;
         }
         else if ( profunditat == 0) {
@@ -253,7 +253,7 @@ public class amazonxes implements IPlayer, IAuto {
         for (int q = 0; q < s.getNumberOfAmazonsForEachColor(); q++) {
             
             //Obtenemos una amazona
-            Point amazona = s.getAmazon(propi, q);
+            Point amazona = s.getAmazon(actual, q);
             
             //Obtenemos todos los movimientos possibles de es amazona...
             ArrayList<Point> possiblesMovimientos = s.getAmazonMoves(amazona, false); // -> True para simplificar y tardar menos.
@@ -262,17 +262,18 @@ public class amazonxes implements IPlayer, IAuto {
             for(int i = 0; i < possiblesMovimientos.size(); i++){
             
                 //Realizamos el movimiento de la amazona en el tablero...
-                //GameStatus s2 = new GameStatus(s);
-                s.moveAmazon(amazona, possiblesMovimientos.get(i));
+                GameStatus s2 = new GameStatus(s);
+                s2.moveAmazon(amazona, possiblesMovimientos.get(i));
                 
                 //Obtenemos una lista con todas las casillas libres del tablero...
-                ArrayList<Point> casillasLibres = getEmptyCells(s);
+                ArrayList<Point> casillasLibres = getEmptyCells(s2);
                 
                 //Por cada possible casilla libre en la que tirar la flecha...
                 for(int r = 0; r < casillasLibres.size(); r++ ){
                     
                     //Realizamos el movimiento de tirar la flecha en el tablero...
                     GameStatus s3 = new GameStatus(s);
+                    s3.moveAmazon(amazona, possiblesMovimientos.get(i));
                     s3.placeArrow(casillasLibres.get(r));                                
                 
                     //Llamamos a MIN                      
@@ -283,7 +284,7 @@ public class amazonxes implements IPlayer, IAuto {
                     if( beta<= alfa) return valorNodeActual;
    
                 }
-                s.moveAmazon(possiblesMovimientos.get(i),amazona);
+                //s.moveAmazon(possiblesMovimientos.get(i),amazona);
             }
         }
         return valorNodeActual;
