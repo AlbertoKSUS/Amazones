@@ -91,7 +91,7 @@ public class heuristica {
             //Obtenemos todos los movimientos possibles de la amazona amiga.
             ArrayList<Point> possiblesMovimientosAmigos = s.getAmazonMoves(amazonaAmiga, false);
             //Obtenemos todos los movimientos possibles de la amazona enemiga
-            ArrayList<Point> possiblesMovimientosEnemigos = s.getAmazonMoves(amazonaAmiga, false);
+            ArrayList<Point> possiblesMovimientosEnemigos = s.getAmazonMoves(amazonaEnemiga, false);
             
             valor += possiblesMovimientosAmigos.size();
             valor -= possiblesMovimientosEnemigos.size();
