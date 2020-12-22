@@ -23,8 +23,6 @@ public class amazonxes_iter implements IPlayer, IAuto {
 
     //Atributos
     private String name;
-    /*CellType propi;
-    CellType enemic;*/
     int countNodes;
     int countFulles;
     int profunditatMaxima;
@@ -38,7 +36,6 @@ public class amazonxes_iter implements IPlayer, IAuto {
      */
     public amazonxes_iter(String name) {
         this.name = name;
-        //this.profunditatMaxima = profunditatMaxima;
         this.timeTOstop = false;
     }
 
@@ -52,14 +49,6 @@ public class amazonxes_iter implements IPlayer, IAuto {
         return "Player(" + name + ")";
     }
     
-    private void mostra(ArrayList<Point> n){
-        for(int i = 0; i<n.size();++i){
-            System.out.println("=>"+ i+ " pos " + n.get(i));
-        }
-    }
-    /*private ArrayList<Point> MovimentsComplets(ArrayList<Point> mov){
-        
-    }*/
     
     /**
      * Utiliza minimax para calcular el mejor movimiento possible para esa jugada.
@@ -79,15 +68,16 @@ public class amazonxes_iter implements IPlayer, IAuto {
        return res;
         
     }
-    
+     /**
+     * Inicia el minimax
+     * @param s Estado del juego
+     * @return Devuelve el mejor movimiento possible en esa jugada.
+     */
     private Move inici(GameStatus s){
         // Inicializaciones
         
         //Obtenemos el color que representa al jugador
         CellType actual = s.getCurrentPlayer();
-        //Obtenemos el color que representa el enemigo
-        /*if(propi == CellType.PLAYER1) enemic = CellType.PLAYER2;
-        else enemic = CellType.PLAYER1;*/
         
         //Variables para optimizar la poda.
         double max = Double.NEGATIVE_INFINITY;
@@ -175,7 +165,7 @@ public class amazonxes_iter implements IPlayer, IAuto {
     
     
     /**
-     * Funcion Min del minimax ( ESTARIA BIEN JUNTAR MIN Y MAX EN UNA SOLA FUNCION)
+     * Funcion Min del minimax 
      * @param estat
      * @param depth
      * @param alpha
@@ -195,7 +185,7 @@ public class amazonxes_iter implements IPlayer, IAuto {
         }
         else if ( profunditat == 0 || timeTOstop) {
             countFulles++;
-            heuristica actu = new heuristica(s,1);
+            heuristica actu = new heuristica(s);
             return -actu.getHeuristica();
         }
         
@@ -255,7 +245,7 @@ public class amazonxes_iter implements IPlayer, IAuto {
         }
         else if ( profunditat == 0 || timeTOstop) {
             countFulles++;
-            heuristica actu = new heuristica(s,1);
+            heuristica actu = new heuristica(s);
             return actu.getHeuristica();
         }
         

@@ -22,12 +22,12 @@ public class Amazons {
             @Override
             public void run() {
                 
-                //IPlayer player1 = new amazonxes("hola", 2);
+                //IPlayer player1 = new amazonxes("papa", 2);
                 IPlayer player1 = new amazonxes_iter("papa");
                         
                 IPlayer player2 = new CarlinhosPlayer();
                 
-                new AmazonsBoard(player1 , player2, 10, Level.FULL_BOARD);
+                new AmazonsBoard(player1 , player2, 10, Level.QUARTERBOARD);
                 
             }
         });

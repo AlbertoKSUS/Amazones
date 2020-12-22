@@ -23,8 +23,6 @@ public class amazonxes implements IPlayer, IAuto {
 
     //Atributos
     private String name;
-    /*CellType propi;
-    CellType enemic;*/
     int countNodes;
     int countFulles;
     int profunditatMaxima;
@@ -50,15 +48,6 @@ public class amazonxes implements IPlayer, IAuto {
         return "Player(" + name + ")";
     }
     
-    private void mostra(ArrayList<Point> n){
-        for(int i = 0; i<n.size();++i){
-            System.out.println("=>"+ i+ " pos " + n.get(i));
-        }
-    }
-    /*private ArrayList<Point> MovimentsComplets(ArrayList<Point> mov){
-        
-    }*/
-    
     /**
      * Utiliza minimax para calcular el mejor movimiento possible para esa jugada.
      * @param s Estado del juego
@@ -70,9 +59,6 @@ public class amazonxes implements IPlayer, IAuto {
         
         //Obtenemos el color que representa al jugador
         CellType actual = s.getCurrentPlayer();
-        //Obtenemos el color que representa el enemigo
-        /*if(propi == CellType.PLAYER1) enemic = CellType.PLAYER2;
-        else enemic = CellType.PLAYER1;*/
         
         //Variables para optimizar la poda.
         double max = Double.NEGATIVE_INFINITY;
@@ -180,7 +166,7 @@ public class amazonxes implements IPlayer, IAuto {
         }
         else if ( profunditat == 0) {
             countFulles++;
-            heuristica actu = new heuristica(s,1);
+            heuristica actu = new heuristica(s);
             return -actu.getHeuristica();
         }
         
@@ -240,7 +226,7 @@ public class amazonxes implements IPlayer, IAuto {
         }
         else if ( profunditat == 0) {
             countFulles++;
-            heuristica actu = new heuristica(s,1);
+            heuristica actu = new heuristica(s);
             return actu.getHeuristica();
         }
         
