@@ -14,6 +14,7 @@ import edu.upc.epsevg.prop.amazons.SearchType;
 import edu.upc.epsevg.prop.amazons.heuristica;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -26,6 +27,8 @@ public class amazonxes_iter implements IPlayer, IAuto {
     int countNodes;
     int countFulles;
     int profunditatMaxima;
+    Move res;
+    boolean first;
     boolean timeTOstop;
 
     // Metodos
@@ -57,13 +60,13 @@ public class amazonxes_iter implements IPlayer, IAuto {
      */
     public Move move(GameStatus s) {
         this.profunditatMaxima = 1;
-        Move res = inici(s);
+        res = null;
+        res = inici(s);
         ++profunditatMaxima;
         while(!timeTOstop){
             res = inici(s);
             ++profunditatMaxima;
         }
-        this.profunditatMaxima = 1;
         this.timeTOstop = false;
        return res;
         
@@ -87,7 +90,7 @@ public class amazonxes_iter implements IPlayer, IAuto {
         //Variables de informacion del minimax      
         countNodes = 0;
         countFulles = 0;    
-        
+     
         //Variables para guardar el mejor movimiento.
         Point mejorAmazona = new Point(0,0);
         Point destinoAmazona = new Point(0,0);
@@ -103,7 +106,14 @@ public class amazonxes_iter implements IPlayer, IAuto {
             
             //Obtenemos todos los movimientos possibles de es amazona...
             ArrayList<Point> possiblesMovimientos = s.getAmazonMoves(amazona, false); // -> True para simplificar y tardar menos.
-            
+            //mejorar la poda alfa beta empezando por el movimiento de amazona mas prometedor de la iteracion anterior
+            if (res != null) 
+                if(amazona == res.getAmazonFrom())
+                    for(int k = 0; k < possiblesMovimientos.size(); k++){
+                        if(possiblesMovimientos.get(k) == res.getAmazonTo()){
+                            Collections.swap(possiblesMovimientos, k,0);
+                        }
+                    }
             // Para cada possible movimiento de esa amazona...
             for(int i = 0; i < possiblesMovimientos.size(); i++){
             
@@ -113,19 +123,25 @@ public class amazonxes_iter implements IPlayer, IAuto {
                 
                 //Obtenemos una lista con todas las casillas libres del tablero...
                 ArrayList<Point> casillasLibres = getEmptyCells(s2);
+                //mejorar la poda alfa beta empezando por el movimiento de amazona mas prometedor de la iteracion anterior
+                if (i==0 && res != null) 
+                    for(int k =0; k <casillasLibres.size(); k++){
+                        if(casillasLibres.get(k) == res.getArrowTo()){
+                            Collections.swap(casillasLibres, k,0);
+                        }
+                    }
                 
                 //Por cada possible casilla libre en la que tirar la flecha...
                 for(int r = 0; r < casillasLibres.size(); r++ ){
-                    
+                     
                     //Realizamos el movimiento de tirar la flecha en el tablero...
                     GameStatus s3 = new GameStatus(s);
-                    s3.moveAmazon(amazona, possiblesMovimientos.get(i));
-                    s3.placeArrow(casillasLibres.get(r));                   
-                
+                    s3.moveAmazon(amazona,possiblesMovimientos.get(i));
+                    s3.placeArrow(casillasLibres.get(r));
+                    
                     //Llamamos a MINIMAX                        
                     double valor = min(s3,profunditatMaxima-1,alfa,beta);
                     
-
                     //CComprobamos que el nodo actual es el mejor candidato, en caso afirmativo, guardamos la informacion del movimiento
                     if(max < valor){
                         max = valor;
@@ -225,12 +241,12 @@ public class amazonxes_iter implements IPlayer, IAuto {
                     valorNodeActual = Math.min(valorNodeActual, max(s3,profunditat-1,alfa,beta));
                         
                     // Ampliacio poda alfa-beta
-                    alfa = Math.min(valorNodeActual,alfa);
-                    if( beta <= alfa) return valorNodeActual;
+                    beta = Math.min(valorNodeActual,beta);
+                    if( beta <= alfa) return beta;
                 }
             }
         }
-        return valorNodeActual;
+        return beta;
     }
             
     private double max(GameStatus s, int profunditat, double alfa, double beta){
@@ -286,12 +302,11 @@ public class amazonxes_iter implements IPlayer, IAuto {
                         
                     // Ampliacio poda alfa-beta
                     alfa = Math.max(valorNodeActual,alfa);
-                    if( beta<= alfa) return valorNodeActual;
+                    if( beta <= alfa) return alfa;
    
                 }
-                //s.moveAmazon(possiblesMovimientos.get(i),amazona);
             }
         }
-        return valorNodeActual;
+        return alfa;
     }
 }

@@ -25,7 +25,6 @@ public class heuristica {
     /**
      * Constructor de la classe
      * @param s Estado del juego
-     * @param n Nivel de complejidad de la heuristica utilizada
      */
     public heuristica(GameStatus s) {
         

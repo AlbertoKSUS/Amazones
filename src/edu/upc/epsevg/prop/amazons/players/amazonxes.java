@@ -206,12 +206,12 @@ public class amazonxes implements IPlayer, IAuto {
                     valorNodeActual = Math.min(valorNodeActual, max(s3,profunditat-1,alfa,beta));
                         
                     // Ampliacio poda alfa-beta
-                    alfa = Math.min(valorNodeActual,alfa);
-                    if( beta <= alfa) return valorNodeActual;
+                    beta = Math.min(valorNodeActual,beta);
+                    if( beta <= alfa) return beta;
                 }
             }
         }
-        return valorNodeActual;
+        return beta;
     }
             
     private double max(GameStatus s, int profunditat, double alfa, double beta){
@@ -267,12 +267,12 @@ public class amazonxes implements IPlayer, IAuto {
                         
                     // Ampliacio poda alfa-beta
                     alfa = Math.max(valorNodeActual,alfa);
-                    if( beta<= alfa) return valorNodeActual;
+                    if( beta <= alfa) return alfa;
    
                 }
-                //s.moveAmazon(possiblesMovimientos.get(i),amazona);
+               
             }
         }
-        return valorNodeActual;
+        return alfa;
     }
 }
