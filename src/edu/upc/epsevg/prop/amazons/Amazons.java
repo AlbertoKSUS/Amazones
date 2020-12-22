@@ -22,7 +22,7 @@ public class Amazons {
             @Override
             public void run() {
                 
-                //IPlayer player1 = new amazonxes("papa", 2);
+                //IPlayer player1 = new amazonxes("papa", 4);
                 IPlayer player1 = new amazonxes_iter("papa");
                         
                 IPlayer player2 = new CarlinhosPlayer();

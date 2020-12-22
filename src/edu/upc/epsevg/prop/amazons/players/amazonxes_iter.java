@@ -246,7 +246,7 @@ public class amazonxes_iter implements IPlayer, IAuto {
                 }
             }
         }
-        return beta;
+        return valorNodeActual;
     }
             
     private double max(GameStatus s, int profunditat, double alfa, double beta){
@@ -307,6 +307,6 @@ public class amazonxes_iter implements IPlayer, IAuto {
                 }
             }
         }
-        return alfa;
+        return valorNodeActual;
     }
 }

@@ -270,7 +270,7 @@ public class amazonxes implements IPlayer, IAuto {
                     if( beta <= alfa) return alfa;
    
                 }
-               
+                
             }
         }
         return alfa;
