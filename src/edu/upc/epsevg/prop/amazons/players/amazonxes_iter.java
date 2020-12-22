@@ -161,7 +161,7 @@ public class amazonxes_iter implements IPlayer, IAuto {
      * @param s Estado del juego
      * @return Devuelve una lista con todas las casillas libres del tablero.
      */
-    public ArrayList<java.awt.Point> getEmptyCells(GameStatus s) {
+    private ArrayList<java.awt.Point> getEmptyCells(GameStatus s) {
         
         ArrayList<Point> emptyCells = new ArrayList<>();
         

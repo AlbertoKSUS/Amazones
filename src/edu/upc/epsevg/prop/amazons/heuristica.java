@@ -48,7 +48,7 @@ public class heuristica {
      * numero de possibles movimientos (restringidos) que pueden realizar las damas de cada jugador.
      * @param s Estado del juego
      */
-    public void basica(GameStatus s) {
+    private void basica(GameStatus s) {
         
         //Por cada amazona de la partida...
         for (int i = 0; i < s.getNumberOfAmazonsForEachColor(); i++) {
