@@ -22,16 +22,17 @@ import java.util.ArrayList;
 public class amazonxes implements IPlayer, IAuto {
 
     //Atributos
-    private String name;
-    int countNodes;
-    int countFulles;
-    int profunditatMaxima;
+    private String name; //Nombre del jugador
+    int countNodes; //Contador de nodos explorados
+    int countFulles; //Contador de nodos hoja explorados 
+    int profunditatMaxima; //Profundidad maxima que exploramos por movimiento.
 
     // Metodos
     
     /**
      * Constructor
-     * @param name 
+     * @param name Nombre del jugador
+     * @param profunditatMaxima Profundidad maxima que exploramos por movimiento
      */
     public amazonxes(String name,int profunditatMaxima) {
         this.name = name;
@@ -106,7 +107,6 @@ public class amazonxes implements IPlayer, IAuto {
                     //Llamamos a MINIMAX                        
                     double valor = min(s3,profunditatMaxima-1,alfa,beta);
                     
-
                     //CComprobamos que el nodo actual es el mejor candidato, en caso afirmativo, guardamos la informacion del movimiento
                     if(max < valor){
                         max = valor;
@@ -146,13 +146,12 @@ public class amazonxes implements IPlayer, IAuto {
     
     
     /**
-     * Funcion Min del minimax ( ESTARIA BIEN JUNTAR MIN Y MAX EN UNA SOLA FUNCION)
-     * @param estat
-     * @param depth
-     * @param alpha
-     * @param beta
-     * @param emptyCells
-     * @return 
+     * Funcion Min del minimax
+     * @param estat Estado del tablero
+     * @param depth Profundidad restante para llegar al nodo hoja
+     * @param alpha Para implementar poda alfa-beta
+     * @param beta Para implementar poda alfa-beta
+     * @return Devuelve el valor del nodo
      */
     private double min(GameStatus s, int profunditat, double alfa, double beta){
         
@@ -165,6 +164,7 @@ public class amazonxes implements IPlayer, IAuto {
             else return Double.POSITIVE_INFINITY;
         }
         else if ( profunditat == 0) {
+        // De lo contrario, si la profundidad es 0, calculamos la heuristica.
             countFulles++;
             heuristica actu = new heuristica(s);
             return -actu.getHeuristica();
@@ -211,9 +211,17 @@ public class amazonxes implements IPlayer, IAuto {
                 }
             }
         }
-        return beta;
+        return valorNodeActual;
     }
-            
+    
+    /**
+     * Funcion max del minimax
+     * @param s Estado del tablero
+     * @param profunditat Profundidad restante para 
+     * @param alfa Para implementar poda alfa-beta
+     * @param beta Para implementar poda alfa-beta
+     * @return Devuelve el valor del nodo 
+     */
     private double max(GameStatus s, int profunditat, double alfa, double beta){
         
         //Contador de nodos explorados
@@ -273,6 +281,6 @@ public class amazonxes implements IPlayer, IAuto {
                 
             }
         }
-        return alfa;
+        return valorNodeActual;
     }
 }

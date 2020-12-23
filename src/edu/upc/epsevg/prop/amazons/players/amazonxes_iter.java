@@ -23,19 +23,19 @@ import java.util.Collections;
 public class amazonxes_iter implements IPlayer, IAuto {
 
     //Atributos
-    private String name;
-    int countNodes;
-    int countFulles;
-    int profunditatMaxima;
+    private String name; // Nombre del jugador
+    int countNodes; //Numero de nodos explorados
+    int countFulles; //Numero de nodos hoja explorados
+    int profunditatMaxima; //Profundidad maxima
     Move res;
     boolean first;
-    boolean timeTOstop;
+    boolean timeTOstop; //Para implementar el timeOut
 
     // Metodos
     
     /**
      * Constructor
-     * @param name 
+     * @param name Nombre del jugaodr
      */
     public amazonxes_iter(String name) {
         this.name = name;
@@ -59,16 +59,25 @@ public class amazonxes_iter implements IPlayer, IAuto {
      * @return Devuelve el mejor movimiento possible en esa jugada.
      */
     public Move move(GameStatus s) {
+        
+        
+        //Inidializamos variables
         this.profunditatMaxima = 1;
         res = null;
+        
+        //Calculamos el resultado para profundidad 1 y nos quedamos con el mejor movimiento.
         res = inici(s);
         ++profunditatMaxima;
+        
+        //Mientras no se acabe el tiempo, calculamos minimax con mas profundidad
         while(!timeTOstop){
             res = inici(s);
             ++profunditatMaxima;
         }
+        
+        //Ponemos la variable de timeOut a false y devolvemos el mejor resultado
         this.timeTOstop = false;
-       return res;
+        return res;
         
     }
      /**
@@ -106,7 +115,9 @@ public class amazonxes_iter implements IPlayer, IAuto {
             
             //Obtenemos todos los movimientos possibles de es amazona...
             ArrayList<Point> possiblesMovimientos = s.getAmazonMoves(amazona, false); // -> True para simplificar y tardar menos.
-            //mejorar la poda alfa beta empezando por el movimiento de amazona mas prometedor de la iteracion anterior
+            
+            
+            // Para optimizar la poda alfa-beta, empezamos por el movimiento de amazona mas prometedor de la iteracion anterior.
             if (res != null) 
                 if(amazona == res.getAmazonFrom())
                     for(int k = 0; k < possiblesMovimientos.size(); k++){
@@ -123,7 +134,8 @@ public class amazonxes_iter implements IPlayer, IAuto {
                 
                 //Obtenemos una lista con todas las casillas libres del tablero...
                 ArrayList<Point> casillasLibres = getEmptyCells(s2);
-                //mejorar la poda alfa beta empezando por el movimiento de amazona mas prometedor de la iteracion anterior
+                
+                //// Para optimizar la poda alfa-beta, empezamos por el movimiento de amazona mas prometedor de la iteracion anterior.
                 if (i==0 && res != null) 
                     for(int k =0; k <casillasLibres.size(); k++){
                         if(casillasLibres.get(k) == res.getArrowTo()){
@@ -182,12 +194,11 @@ public class amazonxes_iter implements IPlayer, IAuto {
     
     /**
      * Funcion Min del minimax 
-     * @param estat
-     * @param depth
-     * @param alpha
-     * @param beta
-     * @param emptyCells
-     * @return 
+     * @param estat Estado del tablero
+     * @param profunditat Numero de niveles restantes para llegar a la raiz
+     * @param alfa Para implementar poda alfa-beta
+     * @param beta Para implementar poda alfa-beta
+     * @return Devuelve el valor de ese nodo
      */
     private double min(GameStatus s, int profunditat, double alfa, double beta){
         
@@ -248,7 +259,15 @@ public class amazonxes_iter implements IPlayer, IAuto {
         }
         return valorNodeActual;
     }
-            
+    
+    /**
+     * Funcion max del minimax
+     * @param s Estado del tablero
+     * @param profunditat Numero de niveles restantes para llegar a la raiz
+     * @param alfa Para implementar poda alfa-beta
+     * @param beta Para implementar poda alfa-beta
+     * @return Devuelve el valor de ese nodo.
+     */
     private double max(GameStatus s, int profunditat, double alfa, double beta){
         
         //Contador de nodos explorados

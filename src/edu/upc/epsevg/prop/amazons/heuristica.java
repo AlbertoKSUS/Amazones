@@ -12,7 +12,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 /**
- * Guarda implementacions de diverses heuristiques.
+ * Implementacion de la Heuristica
  * @author kilian alpez
  */
 public class heuristica {
@@ -39,16 +39,16 @@ public class heuristica {
         //Inicializamos el valor heuristico en 0
         valor = 0;
         
-        basica(s);
+        calcula(s);
         
     }
     
     /**
      * Una heuristica muy simple, unicamente tendremos en cuenta  el
-     * numero de possibles movimientos (restringidos) que pueden realizar las damas de cada jugador.
+     * numero de possibles movimientos que pueden realizar las damas de cada jugador.
      * @param s Estado del juego
      */
-    private void basica(GameStatus s) {
+    private void calcula(GameStatus s) {
         
         //Por cada amazona de la partida...
         for (int i = 0; i < s.getNumberOfAmazonsForEachColor(); i++) {
@@ -58,6 +58,7 @@ public class heuristica {
             //Obtenemos una amazona de jugador enemigo
             Point amazonaEnemiga = s.getAmazon(enemic, i);
             
+            //Sumamos/restamos el numero de possibles movimientos
             valor += s.getAmazonMoves(amazonaAmiga, false).size();
             valor -= s.getAmazonMoves(amazonaEnemiga,false ).size();
             
